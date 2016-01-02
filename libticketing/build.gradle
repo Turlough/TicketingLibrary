@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    println "Java.home " +  System.getProperty("java.home")
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    apply plugin: 'war'
+    providedCompile 'org.projectlombok:lombok:1.16.6'
+    compile 'com.annimon:stream:1.0.1'
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    compile 'junit:junit-dep:4.11'
+}
+
+jar.dependsOn test

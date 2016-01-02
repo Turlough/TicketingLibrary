@@ -1,0 +1,68 @@
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.cowman.turlough.ticketinglibrary"
+        minSdkVersion 12
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    sourceSets {
+        main { java.srcDirs = ['src/main/java'] }
+        Test { java.srcDirs = ['src/test/java'] }
+    }
+}
+
+retrolambda {
+
+    //https://github.com/evant/gradle-retrolambda/issues/99
+
+    include 'Debug', 'Release'
+
+    println("***************** ---------- *******************")
+    println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
+    println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
+    println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
+    println "Java.home " +  System.getProperty("java.home")
+    println("***************** ---------- *******************")
+
+    jdk System.getenv("JAVA8_HOME")
+    oldJdk System.getenv("JAVA7_HOME")
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    String rtJar = System.getenv('JAVA7_HOME')+'/jre/lib/rt.jar'
+    println "testCompile rtJar " + rtJar
+    testCompile files(System.getenv('JAVA_HOME')+'/jre/lib/rt.jar')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile project(':libticketing')
+    compile 'com.annimon:stream:1.0.1'
+    compile 'junit:junit-dep:4.11'
+}
